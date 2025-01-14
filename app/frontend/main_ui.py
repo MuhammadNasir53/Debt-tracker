@@ -8,46 +8,76 @@ COLOR =ft.LinearGradient(
 
 def main_ui():
 
-    wel=ft.Column(
-        controls=[
-            ft.Text(value="Welcome",size=25,weight="bold"),
-            ft.Text(value=".       to",size=20,weight="bold"),
-            ft.Text(value="Debt Tracker",size=20,weight="bold")
-        ]
+   Tittle =ft.Column([
+        ft.Column([
+            ft.Text("welcome",size=30,weight="bold",),
+            ft.Text("Debt  Tracker",size=25,weight="bold",),
+
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        ),
+    ])
+    balance = ft.Container(
+        width=300,
+        height=50,
+        border_radius=10,
+        bgcolor="green",
+        padding=10,
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            controls=[
+                ft.Text("\u20a6" + "280", size=20, color="white"),
+                ft.Container(
+                    width=60,
+                    height=45,
+                    border_radius=5,
+                    bgcolor="yellow",
+                    alignment=ft.alignment.center,
+                    content=ft.Text("Details", size=12, weight="bold"),
+                ),
+            ],
+        ),
     )
-    return ft.Column(
+
+    two_con = ft.Row([
+        ft.Container(
+            width=148,height=100,border_radius=10,
+            bgcolor="green",
+        ),
+        ft.Container(
+            width=148,height=100,border_radius=10,
+            bgcolor="green",
+        )
+    ])
+    recent_debt = ft.Column(
+        height=300,
+        # for the ListView of debt list
+    )
+    actions =ft.Stack(
         controls=[
-            wel,
             ft.Row([
                 ft.Container(
-                    height=160,gradient=COLOR,
-                    border_radius=7,width=170
-                ),
-                ft.Column([
-                    ft.Container(
-                    height=75,gradient=COLOR,
-                    border_radius=7,width=170,
-                    padding=ft.padding.only(bottom=0),
-                ),
-                ft.Container(
-                    height=75,gradient=COLOR,
-                    border_radius=7,width=170,
-                    padding=ft.padding.only(bottom=0)
+                width=40,height=40,border_radius=20,
+                bgcolor="green",
+                alignment=ft.alignment.center,
+                content=ft.Text("+",size=30,weight="bold",color="yellow"),
+            ),
 
-                )
-                ])
-            ]),
-            ft.Container(
-                height=80,gradient=COLOR,
-                border_radius=10,
+            ],
+            alignment=ft.MainAxisAlignment.END,
             ),
-            ft.Text(value="Recent debt",size=15,weight="bold",),
             
-            ft.Container(
-                height=80,gradient=COLOR,
-                border_radius=10,
-            ),
-            ft.Text(value="Recent debt",size=15,weight="bold",),
-            
+        ]
+    )
+
+    return ft.Column(
+        controls=[
+            Tittle,
+            balance,
+            two_con,
+            ft.Text("Recent",size=20,weight="bold"),
+            recent_debt,
+            actions
         ]
     )
