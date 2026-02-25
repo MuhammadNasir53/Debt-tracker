@@ -38,6 +38,12 @@ class MyApp:
             expand=True,
             on_click=self.open_pay_debt
         )
+        self.add_buttn = ft.Container(
+            width=220,
+            height=80,
+            border=ft.Border.all(2, color="green"),
+            content=ft.Column([self.total_text])
+        )
         self.ui_update()
 
     def build_ui(self):
@@ -49,13 +55,14 @@ class MyApp:
                     controls=[ft.Text(self.title,size=22, weight=ft.FontWeight.BOLD),]
                 ),
                 ft.Container(
-                    bgcolor='green',
                     height=70,
                     border_radius=22,
-                    padding=22,
-                    content=ft.Row([self.total_text],alignment=ft.MainAxisAlignment.START)
+                    padding=10,
+                    content=ft.Row([self.total_text],alignment=ft.MainAxisAlignment.START),
+                    border=ft.Border.all(2, color="green")
                 ),
                 ft.Row([self.add_btn,self.pay_btn], spacing=12),
+                self.add_buttn,
                 ft.Container(
                     expand=True,
                     content=self.debt_list
@@ -102,7 +109,8 @@ class MyApp:
             title='Pay Debt',
             content=ft.Column([self.pay_name, self.pay_amount]),
             actions=[
-                ft.TextButton('Cancel', on_click= lambda e: self.page.pop_dialog())
+                ft.TextButton('Cancel', on_click= lambda e: self.page.pop_dialog()),
+                ft.TextButton('pay', on_click=self.pay_debt)
             ],modal=True
         )
         self.page.show_dialog(dialog)
@@ -112,15 +120,33 @@ class MyApp:
         amount = self.add_amount.value.strip()
 
         if name and amount.isdigit():
-            new_row = pd.DataFrame([{
-                'name': name,
-                'amount': int(amount),
-                'paid': False
-            }])
+            amount = int(amount)
+            if name in self.df["name"].values:
+                idx = self.df[(self.df["name"] == name) & (self.df["paid"] == False)].index[0]
+                self.df.at[idx, "amount"] += amount
+            else:
+                new_row = pd.DataFrame([{
+                    'name': name,
+                    'amount': int(amount),
+                    'paid': False
+                }])
 
-            self.df = pd.concat([self.df, new_row], ignore_index=True)
+                self.df = pd.concat([self.df, new_row], ignore_index=True)
             self.df.to_csv(CSV_FILE, index=False)
 
+        self.page.pop_dialog()
+        self.ui_update()
+
+    def pay_debt(self, e):
+        selected_name = self.pay_name.value
+        amount = self.pay_amount.value.strip()
+        if selected_name and amount.isdigit():
+            ndex = self.df[(self.df["name"] == selected_name) & (self.df["paid"] == False)].index[0]
+            self.df.at[ndex, "amount"] -= int(amount)
+            if self.df.at[ndex, "amount"] <= 0:
+                self.df.at[ndex, "amount"] = 0
+                self.df.at[ndex, "paid"] = True
+            self.df.to_csv(CSV_FILE, index=False)
         self.page.pop_dialog()
         self.ui_update()
 
@@ -130,7 +156,7 @@ class MyApp:
             self.debt_list.controls.append(
                 ft.Container(
                     padding=10,
-                    bgcolor="green",
+                    border=ft.Border.all(2, color="green"),
                     border_radius=10,
                     content=ft.Row([
                         ft.Text(d['name'],size=22, weight=ft.FontWeight.BOLD),
@@ -149,7 +175,7 @@ def main(page: ft.Page):
     page.title = "Debt Tracker"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.window.width = 450
-    page.window.height = 600
+    # page.window.height = 600
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.padding = 20
 
