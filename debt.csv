@@ -1,15 +1,8 @@
-name,amount,paid
-al1,0,True
-ail,244,False
-usm,234,False
-sj,444,False
-ali,460,True
-usw,388,False
-sjjd,394,False
-musa,234,False
-sss,2,False
-dkk,22,False
-jjsj,232,False
-hamza,2384,False
-musa,3774,False
-ali,274,False
+name,amount,paid,date
+ali,0,True,2026-03-08
+isa,120,False,March 08-26
+you,13,False,March 08-26
+ali,14,False,March 08-26
+idi,345,False,March 08-26
+khal,200,False,March 08-26
+muz,0,True,March 08-26
