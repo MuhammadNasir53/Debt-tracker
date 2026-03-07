@@ -221,16 +221,15 @@ def main(page: ft.Page):
     page.bgcolor = "#F5F7F8"
 
     page.appbar = ft.AppBar(
-        title=ft.Text("Debt Tracker", weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
+        title=ft.Text("Debt Tracker",size=20, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
         center_title=False, 
-        
+        actions_padding= 7,
         bgcolor=ft.Colors.WHITE,
         elevation=0.5,
         actions=[
             ft.IconButton(
                 icon=ft.Icons.SETTINGS_ROUNDED,
                 icon_color=ft.Colors.BLUE_GREY_400,
-                on_click=lambda _: print("Settings Clicked") # You can add a function here later
             ),
         ],
     )
